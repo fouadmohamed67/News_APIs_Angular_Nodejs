@@ -1,0 +1,60 @@
+
+<div id="hiddenForm" [ngClass]="hidden ? 'hidden' : 'aa' " class="fixed  bg-gray-600 opacity-95 w-full h-[calc(100%-1rem)]  ">
+    <div class="m-auto  w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class=" bg-white rounded-lg shadow  "> 
+            <div class="px-6 py-6 mt-4"> 
+                <svg (click)="toggleClass()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>  
+                <h3 class="mb-4 text-xl font-medium text-gray-900  ">Update Post</h3>
+                <form [formGroup]="form" (ngSubmit)="updatePost(form)" class="space-y-6">
+                    <div>
+                        <label for="title" class="block mb-2 text-sm font-medium text-gray-900  ">title </label>
+                        <input  formControlName="title"   type="text" name="title" id="title" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                        <div class="bg-red-100 border border-red-400 text-red-700 my-1 px-4 py-1 rounded " *ngIf="getFormControl['title'].errors && submited" >enter valid title</div>
+                    </div>
+                    <div>
+                        <label for="content" class="block mb-2 text-sm font-medium text-gray-900  ">content</label>
+                        <textarea formControlName="content" name="content" id="content"   class="bg-gray-50 border  text-gray-900 text-sm rounded-lg block w-full p-2.5" required></textarea>
+                        <div class="bg-red-100 border border-red-400 text-red-700 my-1 px-4 py-1 rounded " *ngIf="getFormControl['content'].errors && submited" >enter valid content</div>
+                    </div> 
+                    <div>
+                        <label for="image" class="block mb-2 text-sm font-medium text-gray-900  ">image</label>
+                        <input (change)="onFileChange($event)"   type="file"   name="image" id="image"   class="bg-gray-50 border  text-gray-900 text-sm rounded-lg block w-full p-2.5" accept="image/png, image/gif, image/jpeg" required>
+                        <div class="bg-red-100 border border-red-400 text-red-700 my-1 px-4 py-1 rounded" *ngIf="!file && submited">please select image</div>
+                    </div> 
+                    <button type="submit" class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">save updates</button>
+                     
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+  <div  *ngIf="alertMessage" [ngClass]="typeOfAction ? 'bg-'+typeOfAction+'-100'+' ' :'' " class="w-1/4 mx-auto mt-2  border px-4 py-3 rounded relative" role="alert">
+    <strong class="font-bold">{{alertMessage}}</strong> 
+  </div> 
+<div class="m-auto flex flex-row h-100 p-10 bg-white">
+    <div class="m-auto">
+        <img class="h-64 m-auto" src="{{post? 'http://localhost:3000/'+ post.post.imageURL:'' }}" alt="product image" />
+    </div>
+    <div class="px-5 pb-5 m-auto">
+        <a href="#">
+            <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{post?.post.title}}</h5>
+        </a>
+        <div class="items-center mt-2.5 mb-5">
+            <div>
+                <p>{{post?.post.content}}</p> 
+            </div>
+            <div>
+              Rate :  <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">5.0</span>
+            </div>
+        </div>
+        <div class="flex items-center  "> 
+            <a (click)="toggleClass()"   class="m-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">edit</a>
+            <a  (click)="deletePost()" class="m-5 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">delete</a>
+        </div>
+    </div>
+</div>
+
+

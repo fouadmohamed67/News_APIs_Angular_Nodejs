@@ -1,0 +1,70 @@
+
+ <!-- Modal toggle -->
+<button  class="block  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  mx-auto my-12" type="button" (click)="toggleClass()">
+  add new Post ?
+</button> 
+<!-- Main modal -->
+<div id="hiddenForm" [ngClass]="hidden ? 'hidden' : '' " class="  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="m-auto  w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class=" bg-white rounded-lg shadow  "> 
+            <div class="px-6 py-6 lg:px-8"> 
+                <h3 class="mb-4 text-xl font-medium text-gray-900 ">post information</h3>
+                <form [formGroup]="form" (ngSubmit)="createPost(form)" class="space-y-6">
+                    <div>
+                        <label for="title" class="block mb-2 text-sm font-medium text-gray-900  ">title </label>
+                        <input formControlName="title" type="text" name="title" id="title" class="bg-gray-50 border   text-gray-900 text-sm rounded-lg block w-full p-2.5"   required>
+                        <div class="bg-red-100 border border-red-400 text-red-700 my-1 px-4 py-1 rounded " *ngIf="getFormControl['title'].errors && submited" >enter valid title</div>
+                    </div>
+                    <div>
+                        <label for="content" class="block mb-2 text-sm font-medium text-gray-900  ">content</label>
+                        <textarea formControlName="content" name="content" id="content"   class="bg-gray-50 border  text-gray-900 text-sm rounded-lg block w-full p-2.5" required></textarea>
+                        <div class="bg-red-100 border border-red-400 text-red-700 my-1 px-4 py-1 rounded " *ngIf="getFormControl['content'].errors && submited" >enter valid content</div>
+                    </div> 
+                    <div>
+                        <label for="image" class="block mb-2 text-sm font-medium text-gray-900  ">image</label>
+                        <input (change)="onFileChange($event)"   type="file"   name="image" id="image"   class="bg-gray-50 border  text-gray-900 text-sm rounded-lg block w-full p-2.5 " accept="image/png, image/gif, image/jpeg" required>
+                        <div class="bg-red-100 border border-red-400 text-red-700 my-1 px-4 py-1 rounded" *ngIf="!file && submited">please select image</div>
+                    </div> 
+                    <button type="submit" class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">save Post</button>
+                     
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class=" m-10"> 
+    <div  *ngIf="alertMessage && typeOfAction" [ngClass]="typeOfAction ? 'bg-'+typeOfAction+'-100'+' ' :'' " class="w-1/4 mx-auto mt-2  border px-4 py-3 rounded relative" role="alert">
+        <strong class="font-bold">{{alertMessage}}</strong> 
+      </div> 
+    <div class="flex flex-wrap justify-around "> 
+        <div *ngFor="let post of Posts" class="m-5 md:w-2/4    m-1 bg-white border border-gray-200 rounded-lg shadow   "> 
+            <div class="p-5">
+                <div class=" ">
+                    <img class="h-64 m-auto rounded-t-lg  " src="http://localhost:3000/{{post.imageURL}}" alt="" />
+                </div> 
+                <a >
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900  ">{{post.title}}</h5>
+                </a>
+                <p class="mb-3 font-normal text-gray-700  ">{{post.content}}</p>
+                <a routerLink="post/{{post._id}}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
+                    view post
+                    <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<div class="my-5  ">
+    <div class="mx-auto w-1/4">
+        <ul class="inline-flex -space-x-px  ">
+            <li *ngFor="let pageNnm of totalItems"  > 
+                <a [ngClass]="currentPage == pageNnm ? 'bg-blue-50': 'bg-white' " (click)="getAllPosts(pageNnm)"  class="cursor-pointer px-3 py-2 ml-0 leading-tight text-gray-500  border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700  ">{{pageNnm}}</a>
+            </li>  
+        </ul> 
+    </div>
+</div>
+  
+ 
+ 
